@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Birthday Surprise 🎂</title>
+
+<style>
+
+/* GENERAL DESIGN */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(
+        135deg,
+        #ffe0ec,
+        #e6dcff,
+        #fff1ce
+    );
+    min-height: 100vh;
+    color: #55405f;
+    overflow-x: hidden;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+    padding: 25px 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.page.active {
+    display: flex;
+    animation: appear 0.7s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    background: rgba(255,255,255,0.82);
+    padding: 35px 22px;
+    border-radius: 25px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 10px 35px rgba(150,90,140,0.15);
+}
+
+h1 {
+    font-size: 36px;
+    color: #d45b91;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #bd6095;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+button {
+    background: linear-gradient(
+        135deg,
+        #ff80ae,
+        #bd91ef
+    );
+
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 30px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px 5px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.06);
+    box-shadow: 0 5px 15px #e8a5ca;
+}
+
+.back {
+    background: #b69bdc;
+}
+
+.decoration {
+    font-size: 30px;
+    margin: 18px;
+    animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+
+/* PAGE 1 - WELCOME */
+
+.welcome-title {
+    font-size: 40px;
+}
+
+.subtitle {
+    color: #916a9f;
+}
+
+
+/* PAGE 2 - BIRTHDAY CAKE */
+
+.cake {
+    position: relative;
+    margin: 45px auto 30px;
+    cursor: pointer;
+    width: 220px;
+    height: 175px;
+    transition: 0.3s;
+}
+
+.cake:hover {
+    transform: scale(1.05);
+}
+
+.cake-top {
+    width: 180px;
+    height: 55px;
+    background: #ffb6c9;
+    border-radius: 15px 15px 8px 8px;
+    position: absolute;
+    top: 55px;
+    left: 20px;
+    border-bottom: 8px solid #f58cac;
+}
+
+.cake-bottom {
+    width: 220px;
+    height: 65px;
+    background: #c9a4ef;
+    border-radius: 10px 10px 18px 18px;
+    position: absolute;
+    top: 108px;
+    left: 0;
+    border-bottom: 8px solid #a77bd6;
+}
+
+.candle {
+    width: 12px;
+    height: 45px;
+    background: #fff3a6;
+    position: absolute;
+    top: 10px;
+    left: 104px;
+    border-radius: 5px;
+}
+
+.flame {
+    position: absolute;
+    top: -25px;
+    left: -4px;
+    font-size: 20px;
+    animation: flame 0.6s infinite alternate;
+}
+
+@keyframes flame {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.2);
+    }
+}
+
+.cake-decoration {
+    position: absolute;
+    top: 75px;
+    left: 75px;
+    font-size: 20px;
+}
+
+#birthdayNote {
+    display: none;
+    background: #fff5fa;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+}
+
+#birthdayNote.show {
+    display: block;
+    animation: appear 0.8s ease;
+}
+
+
+/* PAGE 3 - PHOTO GALLERY */
+
+.gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.photo-card {
+    background: white;
+    padding: 12px;
+    border-radius: 18px;
+    width: 220px;
+    box-shadow: 0 5px 20px #dfb5d0;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.photo-placeholder {
+    height: 190px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(
+        135deg,
+        #ffd5e5,
+        #e4d7ff
+    );
+    border-radius: 12px;
+    font-size: 45px;
+}
+
+.photo-placeholder[hidden] {
+    display: none;
+}
+
+.photo-card p {
+    font-size: 14px;
+    margin: 12px 0 3px;
+}
+
+
+/* PAGE 4 - FINAL LETTER */
+
+.letter {
+    background: #fff9fc;
+    padding: 25px;
+    border-radius: 20px;
+    max-width: 550px;
+    width: 100%;
+    line-height: 1.9;
+    box-shadow: 0 5px 20px #e4b8d5;
+}
+
+#finalMessage {
+    display: none;
+    margin-top: 25px;
+    font-size: 20px;
+    color: #d45b91;
+}
+
+#finalMessage.show {
+    display: block;
+    animation: appear 1s ease;
+}
+
+
+/* CONFETTI */
+
+.confetti {
+    position: fixed;
+    top: -30px;
+    font-size: 23px;
+    pointer-events: none;
+    z-index: 100;
+    animation: fall 3s linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 500px) {
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .card {
+        padding: 28px 15px;
+    }
+
+    .photo-card {
+        width: 100%;
+        max-width: 250px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================================= -->
+<!-- PAGE 1 : WELCOME SCREEN -->
+<!-- ================================= -->
+
+<section class="page active" id="page1">
+
+    <div class="decoration">
+        🎈 🌸 🎀 🦋
+    </div>
+
+    <div class="card">
+
+        <h1 class="welcome-title">
+            Hey, <span class="friendName">Banii</span>! 💗
+        </h1>
+
+        <p class="subtitle">
+            Someone has a little surprise waiting for you...
+        </p>
+
+        <h2>
+            And yes, it's all about YOU! 😌
+        </h2>
+
+        <p>
+            Put on your imaginary birthday crown
+            and get ready for something special!
+        </p>
+
+        <div class="decoration">
+            🎂 ✨ 💝
+        </div>
+
+        <button onclick="nextPage(2)">
+            Open Your Surprise 🎁
+        </button>
+
+    </div>
+
+    <div class="decoration">
+        🌷 💕 🌷
+    </div>
+
+</section>
+
+
+
+<!-- ================================= -->
+<!-- PAGE 2 : BIRTHDAY CAKE -->
+<!-- ================================= -->
+
+<section class="page" id="page2">
+
+    <div class="card">
+
+        <h1>Happy Birthday! 🎂</h1>
+
+        <p>
+            Your special day is finally here!
+        </p>
+
+        <h2>
+            Make a Wish! ✨
+        </h2>
+
+        <p>
+            Tap the cake or candles below!
+        </p>
+
+
+        <div class="cake" onclick="makeWish()">
+
+            <div class="candle">
+                <span class="flame">🔥</span>
+            </div>
+
+            <div class="cake-top"></div>
+
+            <div class="cake-bottom"></div>
+
+            <div class="cake-decoration">
+                🍓 🍬
+            </div>
+
+        </div>
+
+
+        <p>
+            Go on, don't be shy! 😂
+        </p>
+
+
+        <div id="birthdayNote">
+
+            <h2>Surprise! 💗</h2>
+
+            <p>
+                Congratulations!
+                You have officially unlocked another
+                year of being fabulous, dramatic
+                and slightly crazy! 😂
+            </p>
+
+            <p>
+                May all your wishes come true.
+                You deserve all the happiness
+                in the world! 🌸
+            </p>
+
+        </div>
+
+
+        <button class="back" onclick="nextPage(1)">
+            ← Back
+        </button>
+
+        <button onclick="nextPage(3)">
+            Next Surprise →
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================= -->
+<!-- PAGE 3 : PHOTO GALLERY -->
+<!-- ================================= -->
+
+<section class="page" id="page3">
+
+    <div class="card">
+
+        <h1>Little Memories 📸</h1>
+
+        <p>
+            A little gallery for a very special person! 💕
+        </p>
+
+
+        <div class="gallery">
+
+
+            <!-- FIRST PHOTO -->
+
+            <div class="photo-card">
+
+                <img
+                    src="photo1.jpg"
+                    alt="Chubby one"
+                    onerror="
+                        this.hidden=true;
+                        this.nextElementSibling.hidden=false;
+                    "
+                >
+
+                <div class="photo-placeholder" hidden>
+                    🌸📸
+                </div>
+
+                <p>
+                    Too pretty to be normal! 😂💕
+                </p>
+
+            </div>
+
+
+
+            <!-- SECOND PHOTO -->
+
+            <div class="photo-card">
+
+                <img
+                    src="photo2.jpg"
+                    alt="Fatt baby"
+                    onerror="
+                        this.hidden=true;
+                        this.nextElementSibling.hidden=false;
+                    "
+                >
+
+                <div class="photo-placeholder" hidden>
+                    🎀✨
+                </div>
+
+                <p>
+                    Main character energy! 👑
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <p>
+            More memories, more laughter,
+            and many more birthdays to celebrate! 🥳
+        </p>
+
+
+        <button class="back" onclick="nextPage(2)">
+            ← Back
+        </button>
+
+        <button onclick="nextPage(4)">
+            Final Surprise 💌
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================= -->
+<!-- PAGE 4 : FINAL SURPRISE -->
+<!-- ================================= -->
+
+<section class="page" id="page4">
+
+    <div class="card">
+
+        <div class="decoration">
+            💗 🌷 💗
+        </div>
+
+
+        <h1>
+            A Little Birthday Letter 💌
+        </h1>
+
+
+        <div class="letter">
+
+            <h2>
+                Dear <span class="friendName">Banii</span>,
+            </h2>
+
+            <p>
+                Happy Birthday to you! 🥳
+            </p>
+
+            <p>
+                I hope your day is filled with laughter,
+                happiness, cake and absolutely zero stress.
+            </p>
+
+            <p>
+                Stay the same crazy, funny and wonderful
+                person you are.
+            </p>
+
+            <p>
+                Never stop smiling and never stop
+                being yourself.
+            </p>
+
+            <p>
+                You deserve all the beautiful things
+                life has to offer. 💕
+            </p>
+
+            <p>
+                I hope your day is as special as you are!
+            </p>
+
+            <h2>
+                Lots of wishes! 🎀
+            </h2>
+
+        </div>
+
+
+
+        <button onclick="revealFinal()">
+            One Last Thing... 👀
+        </button>
+
+
+
+        <div id="finalMessage">
+
+            <h2>
+                YOU ARE THE BIRTHDAY QUEEN! 👑
+            </h2>
+
+            <p>
+                Another year older,
+                but don't worry...
+                your maturity is still loading! 😂
+            </p>
+
+            <div class="decoration">
+                🎉 💖 🎈 🥳
+            </div>
+
+            <h1>
+                HAPPY BIRTHDAY! 🌸
+            </h1>
+
+            <p>
+                Now go eat some cake! 🎂
+            </p>
+
+        </div>
+
+
+        <button class="back" onclick="nextPage(3)">
+            ← Back
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================= -->
+<!-- JAVASCRIPT -->
+<!-- ================================= -->
+
+<script>
+
+
+/* CHANGE HER NAME HERE */
+
+const birthdayName = "Banii";
+
+
+document.querySelectorAll(".friendName").forEach(
+    function(element) {
+        element.textContent = birthdayName;
+    }
+);
+
+
+
+/* PAGE NAVIGATION */
+
+function nextPage(number) {
+
+    document.querySelectorAll(".page").forEach(
+        function(page) {
+            page.classList.remove("active");
+        }
+    );
+
+    document.getElementById("page" + number)
+        .classList.add("active");
+
+    window.scrollTo(0, 0);
+
+}
+
+
+
+/* BIRTHDAY CAKE SURPRISE */
+
+let wishClicked = false;
+
+
+function makeWish() {
+
+    if (wishClicked) {
+        return;
+    }
+
+    wishClicked = true;
+
+    // Hide candle flame
+
+    document.querySelector(".flame").style.display = "none";
+
+    // Reveal birthday note
+
+    document.getElementById("birthdayNote")
+        .classList.add("show");
+
+    // Start confetti
+
+    launchConfetti();
+
+}
+
+
+
+/* FINAL SURPRISE */
+
+function revealFinal() {
+
+    document.getElementById("finalMessage")
+        .classList.add("show");
+
+    launchConfetti();
+
+}
+
+
+
+/* CONFETTI ANIMATION */
+
+function launchConfetti() {
+
+    const decorations = [
+        "🎉",
+        "💖",
+        "✨",
+        "🎊",
+        "💕",
+        "🌸"
+    ];
+
+    for (let i = 0; i < 45; i++) {
+
+        const piece = document.createElement("div");
+
+        piece.className = "confetti";
+
+        piece.textContent =
+            decorations[
+                Math.floor(
+                    Math.random() * decorations.length
+                )
+            ];
+
+        piece.style.left =
+            Math.random() * 100 + "vw";
+
+        piece.style.animationDuration =
+            (2 + Math.random() * 3) + "s";
+
+        document.body.appendChild(piece);
+
+        setTimeout(function() {
+            piece.remove();
+        }, 5000);
+
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>
